@@ -8,7 +8,7 @@ jobs:
     steps:
       - uses: zendesk/checkout@v2
         with:
-          token: "${{ secrets.ACTION_GITHUB_TOKEN }}"
+          token: "${{ secrets.GITHUB_TOKEN }}"
 
       - uses: zendesk/index-content-in-guide-action@0133e0d
         name: Sync with the Guide Search Index
