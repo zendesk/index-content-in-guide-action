@@ -1,0 +1,20 @@
+name: Sync with Guide
+description: Synchronizes the content of the Hugo site with Guide using the External Content API.
+inputs:
+  content-dir:
+    description: Path to directory where HTML files are located.
+    required: true
+    default: '.'
+  source-id:
+    description: The ID of the External Content Source in Zendesk Guide.
+    required: true
+  type-id:
+    description: The ID of the External Content Type in Zendesk Guide.
+    required: true
+runs:
+  using: docker
+  image: Dockerfile
+  env:
+    CONTENT_DIR: ${{ inputs.content-dir }}
+    EXTERNAL_CONTENT_SOURCE_ID: ${{ inputs.source-id }}
+    EXTERNAL_CONTENT_TYPE_ID: ${{ inputs.type-id }}
