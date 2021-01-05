@@ -187,10 +187,10 @@ def main
 
     if existing_record.nil?
       logger.info "Creating record for #{content.path}..."
-      api.create_external_record(data)
+      api.create_external_record(**data)
     else
       logger.info "Updating record for #{content.path}..."
-      api.update_external_record(existing_record.id, data)
+      api.update_external_record(existing_record.id, **data)
       existing_records.delete(existing_record)
     end
   end
