@@ -25,4 +25,4 @@ runs:
     EXTERNAL_CONTENT_SOURCE_ID: ${{ inputs.source-id }}
     EXTERNAL_CONTENT_TYPE_ID: ${{ inputs.type-id }}
     ZENDESK_AUTH: ${{ inputs.auth }}
-    ZENDESK_BASE_URL: "${{ inputs.subdomain }}.zendesk.com"
+    ZENDESK_BASE_URL: "${{ inputs.zendesk-subdomain }}.zendesk.com"
