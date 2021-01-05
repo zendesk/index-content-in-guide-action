@@ -141,7 +141,7 @@ class Content < Struct.new(:path, :title, :html, :id)
   end
 
   def url
-    "#{TARGET_BASE_URL}#{path}"
+    URI.join(TARGET_BASE_URL, path)
   end
 end
 
