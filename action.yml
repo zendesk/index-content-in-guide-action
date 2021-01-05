@@ -11,6 +11,12 @@ inputs:
   type-id:
     description: The ID of the External Content Type in Zendesk Guide.
     required: true
+  auth:
+    description: Authentication Credentials, e.g. `my@email.com:password`.
+    required: true
+  zendesk-subdomain:
+    description: The subdomain of your Zendesk account.
+    required: true
 runs:
   using: docker
   image: Dockerfile
@@ -18,3 +24,5 @@ runs:
     CONTENT_DIR: ${{ inputs.content-dir }}
     EXTERNAL_CONTENT_SOURCE_ID: ${{ inputs.source-id }}
     EXTERNAL_CONTENT_TYPE_ID: ${{ inputs.type-id }}
+    ZENDESK_AUTH: ${{ inputs.auth }}
+    ZENDESK_BASE_URL: "${{ inputs.subdomain }}.zendesk.com"
