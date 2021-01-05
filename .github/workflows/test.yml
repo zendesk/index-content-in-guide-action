@@ -10,7 +10,7 @@ jobs:
         with:
           token: "${{ secrets.GITHUB_TOKEN }}"
 
-      - uses: zendesk/index-content-in-guide-action@0133e0d
+      - uses: ./
         name: Sync with the Guide Search Index
         with:
           auth: ${{ secrets.ZENDESK_AUTH }}
