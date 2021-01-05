@@ -1,4 +1,3 @@
-require 'bundler/setup'
 require 'dotenv/load'
 require 'nokogiri'
 require 'json'
