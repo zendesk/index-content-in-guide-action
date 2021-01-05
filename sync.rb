@@ -142,6 +142,7 @@ class Content < Struct.new(:path, :title, :html, :id)
   end
 end
 
+TARGET_BASE_URL = ENV.fetch("TARGET_BASE_URL")
 EXTERNAL_CONTENT_SOURCE_ID = ENV.fetch("EXTERNAL_CONTENT_SOURCE_ID")
 EXTERNAL_CONTENT_TYPE_ID = ENV.fetch("EXTERNAL_CONTENT_TYPE_ID")
 CONTENT_DIR = ENV.fetch("CONTENT_DIR")
