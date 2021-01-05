@@ -5,6 +5,10 @@ inputs:
     description: Path to directory where HTML files are located.
     required: true
     default: '.'
+  working-dir:
+    description: Working directory.
+    required: true
+    default: "."
   target-base-url:
     description: Path to directory where HTML files are located.
     required: true
@@ -25,6 +29,7 @@ runs:
   image: Dockerfile
   env:
     CONTENT_DIR: ${{ inputs.content-dir }}
+    WORKING_DIR: ${{ inputs.working-dir }}
     EXTERNAL_CONTENT_SOURCE_ID: ${{ inputs.source-id }}
     EXTERNAL_CONTENT_TYPE_ID: ${{ inputs.type-id }}
     ZENDESK_AUTH: ${{ inputs.auth }}
