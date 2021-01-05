@@ -1,0 +1,20 @@
+name: Index in Guide Search
+
+on: push
+
+jobs:
+  sync:
+    runs-on: zendesk-stable
+    steps:
+      - uses: zendesk/checkout@v2
+        with:
+          token: "${{ secrets.ACTION_GITHUB_TOKEN }}"
+
+      - uses: zendesk/index-content-in-guide-action@0133e0d
+        name: Sync with the Guide Search Index
+        with:
+          auth: ${{ secrets.ZENDESK_AUTH }}
+          zendesk-subdomain: z3n-dasch
+          source-id: "01EV9B6T8YH7672NFGPBBYAXGT"
+          type-id: "01EV9B8DJ0668KRW653EFYA9NW"
+          content-dir: "test"
