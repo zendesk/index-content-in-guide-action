@@ -4,7 +4,7 @@ on: push
 
 jobs:
   sync:
-    runs-on: zendesk-stable
+    runs-on: ubuntu-latest
     steps:
       - uses: zendesk/checkout@v2
         with:
