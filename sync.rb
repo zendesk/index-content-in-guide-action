@@ -169,7 +169,7 @@ def main
 
   existing_records = RecordList.new(api: api, logger: logger).to_a
 
-  logger.info "Found #{existing_records.count} files"
+  logger.info "Found #{contents.count} files at #{CONTENT_DIR}"
 
   contents.each do |content|
     data = {
