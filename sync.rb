@@ -1,11 +1,8 @@
 require 'bundler/setup'
 require 'dotenv/load'
-require 'pp'
-require 'csv'
 require 'nokogiri'
 require 'json'
 require 'logger'
-require 'yaml'
 require 'digest'
 require 'excon'
 
