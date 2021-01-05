@@ -141,7 +141,7 @@ class Content < Struct.new(:path, :title, :html, :id)
   end
 
   def url
-    "https://techmenu.zende.sk#{path}"
+    "#{TARGET_BASE_URL}#{path}"
   end
 end
 

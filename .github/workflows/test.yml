@@ -18,3 +18,4 @@ jobs:
           source-id: "01EV9B6T8YH7672NFGPBBYAXGT"
           type-id: "01EV9B8DJ0668KRW653EFYA9NW"
           content-dir: "test"
+          target-base-url: "https://wikipedia.org"

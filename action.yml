@@ -5,6 +5,9 @@ inputs:
     description: Path to directory where HTML files are located.
     required: true
     default: '.'
+  target-base-url:
+    description: Path to directory where HTML files are located.
+    required: true
   source-id:
     description: The ID of the External Content Source in Zendesk Guide.
     required: true
@@ -26,3 +29,4 @@ runs:
     EXTERNAL_CONTENT_TYPE_ID: ${{ inputs.type-id }}
     ZENDESK_AUTH: ${{ inputs.auth }}
     ZENDESK_BASE_URL: "https://${{ inputs.zendesk-subdomain }}.zendesk.com"
+    TARGET_BASE_URL: ${{ inputs.target-base-url }}
