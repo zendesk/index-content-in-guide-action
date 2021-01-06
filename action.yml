@@ -10,7 +10,7 @@ inputs:
     required: true
     default: "."
   target-base-url:
-    description: Path to directory where HTML files are located.
+    description: Base URL that should prefix all paths found in `content-dir`.
     required: true
   source-id:
     description: The ID of the External Content Source in Zendesk Guide.
