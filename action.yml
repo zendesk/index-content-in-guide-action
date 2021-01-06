@@ -10,7 +10,8 @@ inputs:
     required: true
     default: "."
   target-base-url:
-    description: Base URL that should prefix all paths found in `content-dir`.
+    description: |
+      Base URL that should prefix all paths found in `content-dir`. If `working-dir` is provided, the paths will be relative to that dir.
     required: true
   source-id:
     description: The ID of the External Content Source in Zendesk Guide.
