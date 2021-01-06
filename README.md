@@ -50,7 +50,7 @@ Default: `.`
 
 ## Example Workflow
 
-This workflow uses Hugo to build a static site, then synchronizes the HTML files with the Guide search index.
+This workflow uses Hugo to build a static site, then synchronizes the HTML files with the Guide search index:
 
 ```yaml
 name: Index in Guide Search
@@ -79,5 +79,43 @@ jobs:
           source-id: some-source-id
           type-id: some-type-id
           content-dir: public # defaults to `.`
+          target-base-url: https://example.com
+```
+
+If you want to index multiple External Content types you can use the [matrix feature](https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstrategymatrix) of Github Actions:
+
+
+```yaml
+# ...
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        include:
+          - type-id: type-id-1
+            content-dir: guides
+          - type-id: type-id-1
+            content-dir: api-docs
+
+    name: "Sync ${{ matrix.content-dir }}"
+
+    steps:
+      - name: Check out source code
+        uses: actions/checkout@v2
+
+      - name: Build Hugo site
+        uses: klakegg/actions-hugo@1.0.0
+
+      - name: Sync with the Guide Search Index
+        uses: zendesk/index-content-in-guide-action@v3
+        with:
+          auth: ${{ secrets.ZENDESK_AUTH }}
+          zendesk-subdomain: my-zendesk-subdomain
+          source-id: some-source-id
+          type-id: ${{ matrix.type-id }}         # <----
+          content-dir: ${{ matrix.content-dir }} # <----
           target-base-url: https://example.com
 ```
