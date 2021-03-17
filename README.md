@@ -2,8 +2,6 @@
 
 Indexes local HTML files in Zendesk Guide's search index.
 
-**WARNING:** The Zendesk API used by this Action is in "Early Access Program", which means that it's not available to all Zendesk customers yet. This API is subject to change and should not be used in a production environment.
-
 ## Input Parameters
 
 ### `content-dir`
