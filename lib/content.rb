@@ -2,7 +2,7 @@ require 'nokogiri'
 require 'digest'
 
 class Content < Struct.new(:path, :title, :html, :id)
-  def self.load_all(dir)
+  def self.load_all(dir, source)
     paths = Dir["#{dir}/**/*.html"]
 
     paths.map {|path|
@@ -13,7 +13,7 @@ class Content < Struct.new(:path, :title, :html, :id)
         path,
         title,
         html,
-        Digest::MD5.hexdigest(path),
+        Digest::MD5.hexdigest(source + path),
       )
     }
   end
