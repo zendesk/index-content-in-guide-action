@@ -15,6 +15,7 @@ class RecordList
 
       response
         .fetch("records")
+        .select {|data| data.fetch("source").fetch("id") == EXTERNAL_CONTENT_SOURCE_ID }
         .select {|data| data.fetch("type").fetch("id") == EXTERNAL_CONTENT_TYPE_ID }
         .map {|data| SearchRecord.new(data) }
         .each(&block)

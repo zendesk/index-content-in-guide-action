@@ -19,13 +19,13 @@ Required: yes
 
 ### `source-id`
 
-The ID of the External Content Source in Zendesk Guide. See the [Zendesk API docs](https://developer.zendesk.com/rest_api/docs/help_center/federated_search_-_external_content_source_api#creates-an-external-content-source) for how to create an External Content Source.
+The ID of the External Content Source in Zendesk Guide. See the [Zendesk API docs](https://developer.zendesk.com/api-reference/help_center/federated-search/external_content_sources/) for how to create an External Content Source.
 
 Required: yes
 
 ### `type-id`
 
-The ID of the External Content Type in Zendesk Guide. See the [Zendesk API docs](https://developer.zendesk.com/rest_api/docs/help_center/federated_search_-_external_content_type_api#creates-an-external-content-type) for how to create an External Content Type.
+The ID of the External Content Type in Zendesk Guide. See the [Zendesk API docs](https://developer.zendesk.com/api-reference/help_center/federated-search/external_content_types/) for how to create an External Content Type.
 
 Required: yes
 
@@ -91,7 +91,7 @@ If you want to index multiple External Content types you can use the [matrix fea
 jobs:
   sync:
     runs-on: ubuntu-latest
-    
+
     strategy:
       matrix:
         include:
