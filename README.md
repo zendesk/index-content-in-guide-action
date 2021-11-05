@@ -72,7 +72,7 @@ jobs:
         uses: klakegg/actions-hugo@1.0.0
 
       - name: Sync with the Guide Search Index
-        uses: zendesk/index-content-in-guide-action@v3
+        uses: zendesk/index-content-in-guide-action@v5
         with:
           auth: ${{ secrets.ZENDESK_AUTH }}
           zendesk-subdomain: my-zendesk-subdomain
@@ -91,7 +91,7 @@ If you want to index multiple External Content types you can use the [matrix fea
 jobs:
   sync:
     runs-on: ubuntu-latest
-    
+
     strategy:
       matrix:
         include:
@@ -110,7 +110,7 @@ jobs:
         uses: klakegg/actions-hugo@1.0.0
 
       - name: Sync with the Guide Search Index
-        uses: zendesk/index-content-in-guide-action@v3
+        uses: zendesk/index-content-in-guide-action@v5
         with:
           auth: ${{ secrets.ZENDESK_AUTH }}
           zendesk-subdomain: my-zendesk-subdomain
