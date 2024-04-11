@@ -12,6 +12,7 @@ EXTERNAL_CONTENT_SOURCE_ID = ENV.fetch("EXTERNAL_CONTENT_SOURCE_ID")
 EXTERNAL_CONTENT_TYPE_ID = ENV.fetch("EXTERNAL_CONTENT_TYPE_ID")
 CONTENT_DIR = ENV.fetch("CONTENT_DIR", ".")
 WORKING_DIR = ENV.fetch("WORKING_DIR", ".")
+CONTENT_CSS_SELECTOR = ENV.fetch("CONTENT_CSS_SELECTOR", "body")
 
 MAX_BODY_LENGTH = 9000
 
@@ -43,7 +44,7 @@ def main
       external_id: content.id,
       url: content.url,
       title: content.title,
-      body: content.html.slice(0...MAX_BODY_LENGTH),
+      body: content.body.slice(0...MAX_BODY_LENGTH),
       type_id: EXTERNAL_CONTENT_TYPE_ID,
       source_id: EXTERNAL_CONTENT_SOURCE_ID,
       locale: "en-us",

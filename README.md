@@ -48,6 +48,13 @@ Working directory. See `target-base-url` for when to use this.
 Required: yes \
 Default: `.`
 
+### `content-css-selector`
+
+CSS selector that will be passed to [Nokogiri’s `at` method](https://nokogiri.org/rdoc/Nokogiri/XML/Node.html#method-i-at). Only this node from each HTML file will sent to Zendesk Guide. By default, we post all text found in `<body>`, but you can set this selector to something more narrow (for example, `main` or `article`).
+
+Required: no
+Default: `body`
+
 ## Example Workflow
 
 This workflow uses Hugo to build a static site, then synchronizes the HTML files with the Guide search index:
@@ -66,13 +73,13 @@ jobs:
 
     steps:
       - name: Check out source code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Build Hugo site
         uses: klakegg/actions-hugo@1.0.0
 
       - name: Sync with the Guide Search Index
-        uses: zendesk/index-content-in-guide-action@v3
+        uses: zendesk/index-content-in-guide-action@v6
         with:
           auth: ${{ secrets.ZENDESK_AUTH }}
           zendesk-subdomain: my-zendesk-subdomain
@@ -80,6 +87,7 @@ jobs:
           type-id: some-type-id
           content-dir: public # defaults to `.`
           target-base-url: https://example.com
+          content-css-selector: main # defaults to `body`
 ```
 
 If you want to index multiple External Content types you can use the [matrix feature](https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstrategymatrix) of Github Actions:
@@ -104,13 +112,13 @@ jobs:
 
     steps:
       - name: Check out source code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Build Hugo site
         uses: klakegg/actions-hugo@1.0.0
 
       - name: Sync with the Guide Search Index
-        uses: zendesk/index-content-in-guide-action@v3
+        uses: zendesk/index-content-in-guide-action@v6
         with:
           auth: ${{ secrets.ZENDESK_AUTH }}
           zendesk-subdomain: my-zendesk-subdomain
@@ -118,4 +126,5 @@ jobs:
           type-id: ${{ matrix.type-id }}         # <----
           content-dir: ${{ matrix.content-dir }} # <----
           target-base-url: https://example.com
+          content-css-selector: main # defaults to `body`
 ```

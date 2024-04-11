@@ -25,6 +25,10 @@ inputs:
   zendesk-subdomain:
     description: The subdomain of your Zendesk account.
     required: true
+  content-css-selector:
+    description: CSS selector for the section of HTML that will be sent to Guide as text
+    required: false
+    default: 'body'
 runs:
   using: docker
   image: Dockerfile
@@ -36,3 +40,4 @@ runs:
     ZENDESK_AUTH: ${{ inputs.auth }}
     ZENDESK_BASE_URL: "https://${{ inputs.zendesk-subdomain }}.zendesk.com"
     TARGET_BASE_URL: ${{ inputs.target-base-url }}
+    CONTENT_CSS_SELECTOR: ${{ inputs.content-css-selector }}
