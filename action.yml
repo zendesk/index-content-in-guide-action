@@ -19,8 +19,13 @@ inputs:
   type-id:
     description: The ID of the External Content Type in Zendesk Guide.
     required: true
-  auth:
-    description: Authentication Credentials, e.g. `my@email.com:password`.
+  client-id:
+    description: |
+      The Unique Identifier of a Zendesk OAuth client, created in Admin Center under Apps and integrations > APIs > OAuth clients.
+    required: true
+  client-secret:
+    description: |
+      The Secret of the Zendesk OAuth client identified by `client-id`. Store this in a repository secret.
     required: true
   zendesk-subdomain:
     description: The subdomain of your Zendesk account.
@@ -37,7 +42,8 @@ runs:
     WORKING_DIR: ${{ inputs.working-dir }}
     EXTERNAL_CONTENT_SOURCE_ID: ${{ inputs.source-id }}
     EXTERNAL_CONTENT_TYPE_ID: ${{ inputs.type-id }}
-    ZENDESK_AUTH: ${{ inputs.auth }}
+    ZENDESK_CLIENT_ID: ${{ inputs.client-id }}
+    ZENDESK_CLIENT_SECRET: ${{ inputs.client-secret }}
     ZENDESK_BASE_URL: "https://${{ inputs.zendesk-subdomain }}.zendesk.com"
     TARGET_BASE_URL: ${{ inputs.target-base-url }}
     CONTENT_CSS_SELECTOR: ${{ inputs.content-css-selector }}
