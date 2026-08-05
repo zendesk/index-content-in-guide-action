@@ -15,8 +15,8 @@ jobs:
         with:
           client-id: ${{ secrets.ZENDESK_CLIENT_ID }}
           client-secret: ${{ secrets.ZENDESK_CLIENT_SECRET }}
-          zendesk-subdomain: z3n-dasch
-          source-id: "01EV9B6T8YH7672NFGPBBYAXGT"
-          type-id: "01EV9B8DJ0668KRW653EFYA9NW"
+          zendesk-subdomain: z3nab-e418d8-302d0911231564b6db7a9964c378735668b64e
+          source-id: "01KZ8VRGJTNJ7GT2BRYHTXZE4K"
+          type-id: "01KZ8VRH998FHPTAMTHS6SA3BF"
           content-dir: "test"
           target-base-url: "https://wikipedia.org"

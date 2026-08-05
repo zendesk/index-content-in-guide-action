@@ -1,0 +1,124 @@
+#!/usr/bin/env bash
+#
+# Creates an External Content source and type on a test Zendesk account,
+# prints their IDs for use as the `source-id` and `type-id` inputs in .github/workflows/test.yml.
+#
+# There is no admin UI for sources and types — they exist only over the API:
+#   https://developer.zendesk.com/api-reference/help_center/federated-search/external_content_sources/
+#   https://developer.zendesk.com/api-reference/help_center/federated-search/external_content_types/
+#
+# Fill in the values below (or pass them in as environment variables)
+# and run `script/create-test-source`. Requires curl and jq.
+
+# The test account subdomain.
+: "${ZENDESK_SUBDOMAIN:=z3n-smth-smth}"
+
+# A confidential OAuth client on that account.
+# Get it from Admin Center > Apps and integrations > APIs > OAuth clients.
+# Use the same client the workflow uses, so you know the credentials in the repository secrets can see what you create.
+# ZENDESK_CLIENT_ID is the client's Unique Identifier, not its numeric id, and
+# the user who created it needs the Help Center manager role.
+: "${ZENDESK_CLIENT_ID:=}"
+: "${ZENDESK_CLIENT_SECRET:=}"
+
+: "${SOURCE_NAME:=index-content-in-guide-action CI}"
+: "${TYPE_NAME:=CI test page}"
+
+set -euo pipefail
+
+log() { printf '%s\n' "$*" >&2; }
+die() { log "error: $*"; exit 1; }
+
+for cmd in curl jq; do
+  command -v "$cmd" >/dev/null || die "$cmd is required but not installed"
+done
+
+[[ -n $ZENDESK_CLIENT_ID ]] || die "set ZENDESK_CLIENT_ID (the OAuth client's Unique Identifier)"
+[[ -n $ZENDESK_CLIENT_SECRET ]] || die "set ZENDESK_CLIENT_SECRET"
+
+base_url="https://$ZENDESK_SUBDOMAIN.zendesk.com"
+
+# Wraps curl so that a non-2xx response fails the script with the response body
+# visible, instead of the ID extraction silently producing "null".
+#
+# Usage: request <expected status> <method> <path> [body]
+request() {
+  local expected=$1 method=$2 path=$3 body=${4:-}
+  local args=(
+    --silent --show-error
+    --write-out '\n%{http_code}'
+    --request "$method"
+    --header "Authorization: Bearer $access_token"
+    --header "Accept: application/json"
+    --header "Content-Type: application/json"
+  )
+  if [[ -n $body ]]; then
+    args+=(--data "$body")
+  fi
+
+  local response status
+  response=$(curl "${args[@]}" "$base_url$path")
+  status=${response##*$'\n'}
+  response=${response%$'\n'*}
+
+  if [[ $status != "$expected" ]]; then
+    log "$method $path returned HTTP $status, expected $expected:"
+    log "${response:0:1000}"
+    if [[ $status == 403 ]]; then
+      log "a 403 usually means the OAuth client's scopes or the service user's role are too narrow;"
+      log "these endpoints need hc:write and the Help Center manager role"
+    fi
+    exit 1
+  fi
+
+  printf '%s' "$response"
+}
+
+log "Requesting an OAuth access token from $base_url/oauth/tokens..."
+token_response=$(
+  curl --silent --show-error --fail-with-body \
+    --request POST \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "$(jq -n \
+      --arg id "$ZENDESK_CLIENT_ID" \
+      --arg secret "$ZENDESK_CLIENT_SECRET" \
+      '{
+         grant_type: "client_credentials",
+         client_id: $id,
+         client_secret: $secret,
+         scope: "hc:read hc:write"
+       }')" \
+    "$base_url/oauth/tokens"
+) || die "could not obtain an access token. Check that the client is confidential (public clients
+cannot use the client credentials grant), that ZENDESK_CLIENT_ID is the Unique Identifier rather
+than the numeric id, and that the client belongs to $ZENDESK_SUBDOMAIN.
+Response: ${token_response:0:1000}"
+
+access_token=$(jq -er .access_token <<<"$token_response") ||
+  die "Zendesk did not return an access_token"
+
+
+log "Creating source \"$SOURCE_NAME\"..."
+source_id=$(
+  request 201 POST /api/v2/guide/external_content/sources \
+    "$(jq -n --arg name "$SOURCE_NAME" '{source: {name: $name}}')" |
+    jq -er .source.id
+)
+log "  source_id: $source_id"
+
+log "Creating type \"$TYPE_NAME\"..."
+type_id=$(
+  request 201 POST /api/v2/guide/external_content/types \
+    "$(jq -n --arg name "$TYPE_NAME" '{type: {name: $name}}')" |
+    jq -er .type.id
+)
+log "  type_id: $type_id"
+
+log ""
+log "Done. Copy these into .github/workflows/test.yml:"
+
+cat <<YAML
+source-id: "$source_id"
+type-id: "$type_id"
+YAML
