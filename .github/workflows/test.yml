@@ -13,7 +13,8 @@ jobs:
       - uses: ./
         name: Sync with the Guide Search Index
         with:
-          auth: ${{ secrets.ZENDESK_AUTH }}
+          client-id: ${{ secrets.ZENDESK_CLIENT_ID }}
+          client-secret: ${{ secrets.ZENDESK_CLIENT_SECRET }}
           zendesk-subdomain: z3n-dasch
           source-id: "01EV9B6T8YH7672NFGPBBYAXGT"
           type-id: "01EV9B8DJ0668KRW653EFYA9NW"
