@@ -22,7 +22,7 @@ def main
   logger = Logger.new(STDOUT)
   logger.formatter = ColoredLoggingFormatter
 
-  contents = Content.load_all(CONTENT_DIR, EXTERNAL_CONTENT_SOURCE_ID)
+  contents = Content.load_all(CONTENT_DIR, EXTERNAL_CONTENT_SOURCE_ID, logger: logger)
   api = FederatedSearchAPI.new(logger: logger)
 
   contents.group_by(&:id).each do |id, cs|

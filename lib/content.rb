@@ -2,18 +2,22 @@ require 'nokogiri'
 require 'digest'
 
 class Content < Struct.new(:path, :title, :body, :id)
-  def self.load_all(dir, source)
+  def self.load_all(dir, source, logger: nil)
     paths = Dir["#{dir}/**/*.html"]
 
-    paths.map {|path|
+    paths.filter_map {|path|
       html = Nokogiri::HTML.parse(File.read(path))
-      title = html.title
-      body = html.at(CONTENT_CSS_SELECTOR).text
+      content_node = html.at(CONTENT_CSS_SELECTOR)
+
+      if content_node.nil?
+        logger&.warn "Skipping #{path}: no element matches CONTENT_CSS_SELECTOR (#{CONTENT_CSS_SELECTOR})"
+        next
+      end
 
       new(
         path,
-        title,
-        body,
+        html.title,
+        content_node.text,
         Digest::MD5.hexdigest(source + path),
       )
     }
